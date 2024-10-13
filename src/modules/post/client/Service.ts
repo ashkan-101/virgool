@@ -8,7 +8,15 @@ export default class Service {
     this.factory = new Factory()
   }
 
-  public async saveNewPost(userId: string,postParams: Partial<IPost>){
-    
+  public async saveNewDraft(userId: string, title: string, body: string, gallery?: string[]){
+    const postParams: Partial<IPost> = {
+      author: userId,
+      title,
+      body,
+      gallery
+    }
+
+    const newPost = await this.factory.savePostInRepository(postParams)
+    return newPost
   }
 }

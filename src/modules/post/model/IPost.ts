@@ -5,7 +5,7 @@ export default interface IPost extends Document{
   author: string
   title: string
   body: string
-  pictures: string[]
+  gallery: string[]
   tags: string[]
   status: PostStatus
   likes: number
