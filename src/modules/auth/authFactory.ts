@@ -17,7 +17,7 @@ export default class AuthFactory {
     return await this.userRepository.findByMobile(mobile)
   }
 
-  public async newRegisterCode(code: string, mobile: string){
+  public async createCode(code: string, mobile: string){
     return await this.codeRepository.create({
       code,
       mobile
@@ -31,5 +31,10 @@ export default class AuthFactory {
 
   public async saveNewUser(mobile: string){
     return await this.userRepository.create({mobile})
+  }
+
+  public async findUser(mobile: string){
+    const user = await this.userRepository.findByMobile(mobile)
+    return user
   }
 }

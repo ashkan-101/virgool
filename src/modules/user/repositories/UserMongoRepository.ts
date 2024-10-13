@@ -20,12 +20,12 @@ export default class UserMongoRepository implements IUserRepository{
     return userQuery
   }
 
-  public async findByMobile(mobile: string): Promise<boolean> {
+  public async findByMobile(mobile: string): Promise<false | IUser>{
     const userQuery = await userModel.findOne({mobile: mobile})
-    if(!userQuery){
+    if(userQuery === null){
       return false
     }
-    return true
+    return userQuery
   }
 
   public async create(params: Partial<IUser>): Promise<IUser> {
