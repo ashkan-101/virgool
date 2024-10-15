@@ -16,8 +16,10 @@ export default class PostMongoRepository implements IPostRepository {
   }
 
 
-  updateOne(id: string, params: Partial<IPost>): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  public async updateOne(id: string, params: Partial<IPost>): Promise<boolean> {
+    const update = await postModel.updateOne({_id: id}, params)
+    console.log(update);
+    return update.acknowledged
   }
   updateMany(where: Partial<IPost>, params: Partial<IPost>): Promise<boolean> {
     throw new Error("Method not implemented.");

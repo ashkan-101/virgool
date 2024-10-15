@@ -10,7 +10,16 @@ export default class Factory {
     this.postRepository = new PostMongoRepository()
   }
 
-  public async savePostInRepository(postParams: Partial<IPost>){
+  public async saveDraftInRepository(postParams: Partial<IPost>){
     return await this.postRepository.create(postParams)
+  }
+
+  public async getPost(id: string){
+    return await this.postRepository.findOne(id)
+  }
+
+  public async updatePost(id: string ,params: Partial<IPost>){
+    const update = await this.postRepository.updateOne(id, params)
+    return update
   }
 }

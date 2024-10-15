@@ -6,6 +6,8 @@ const postRouter: Router = Router()
 const postController = new Controller()
 
 postRouter.use(auth)
-postRouter.post('/create', postController.newPost.bind(postController))
+postRouter.post('/create', postController.newDraft.bind(postController))
+
+postRouter.post('/edit-draft/:id', postController.editDraft.bind(postController))
 
 export default postRouter

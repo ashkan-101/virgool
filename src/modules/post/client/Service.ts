@@ -1,5 +1,7 @@
 import IPost from "../model/IPost";
 import Factory from "./Factory";
+import { deleteFile } from "../../../services/DeleteFileService";
+import { join } from "path";
 
 export default class Service {
   private readonly factory: Factory
@@ -16,7 +18,55 @@ export default class Service {
       gallery
     }
 
-    const newPost = await this.factory.savePostInRepository(postParams)
+    const newPost = await this.factory.saveDraftInRepository(postParams)
     return newPost
+  }
+
+  public async deleteFile(id: string, imageNames: string[]): Promise<boolean>{
+    const post = await this.factory.getPost(id)
+
+    if(!post){
+      return false
+    }
+    imageNames.forEach((name) => {
+      const index = post.gallery.indexOf(name)
+      if(index > -1){
+        post.gallery.splice(index, 1)
+        deleteFile(join(process.cwd(), 'public', 'post-images', name))
+      }
+    })
+
+    const updateGallery = await post.save()
+    if(!updateGallery){
+      return false
+    }
+
+    return true
+  }
+
+  public async updateDraft(id: string, title?: string, body?: string){
+    const updateParams = await this.factory.updatePost(id ,{
+      title,
+      body,
+    })
+    return updateParams
+  }
+
+  public async updateGallery(id: string, gallery: string[]){
+    const post = await this.factory.getPost(id)
+
+    if(!post){
+      return false
+    }
+
+    gallery.forEach((image) => {
+      post.gallery.push(image)
+    })
+    const saveResult = await post.save()
+    if(!saveResult){
+      return false
+    }
+
+    return true
   }
 }
