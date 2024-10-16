@@ -24,9 +24,12 @@ export default class PostMongoRepository implements IPostRepository {
   updateMany(where: Partial<IPost>, params: Partial<IPost>): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
-  deleteOne(id: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
+
+  public async deleteOne(id: string): Promise<boolean> {
+    const deletePost = await postModel.deleteOne({_id: id})
+    return deletePost.deletedCount > 0
   }
+
   deleteMany(params: Partial<IPost>): Promise<boolean> {
     throw new Error("Method not implemented.");
   }

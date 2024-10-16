@@ -22,4 +22,8 @@ export default class Factory {
     const update = await this.postRepository.updateOne(id, params)
     return update
   }
+
+  public async deletePostWithID(id: string){
+    return await this.postRepository.deleteOne(id)
+  }
 }

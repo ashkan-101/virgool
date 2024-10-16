@@ -2,6 +2,7 @@ import IPost from "../model/IPost";
 import Factory from "./Factory";
 import { deleteFile } from "../../../services/DeleteFileService";
 import { join } from "path";
+import NotFoundException from "../../../exceptions/NotFoundException";
 
 export default class Service {
   private readonly factory: Factory
@@ -42,6 +43,22 @@ export default class Service {
     }
 
     return true
+  }
+
+  public async deletePost(id: string){
+    const post = await this.factory.getPost(id)
+    if(!post){
+      throw new NotFoundException('post not found!')
+    }
+    const deleteFileResult = await this.deleteFile(id, post.gallery)
+    if(!deleteFileResult){
+      return false
+    }
+    const deletePostResult = await this.factory.deletePostWithID(id)
+    if(!deletePostResult){
+      return false
+    }
+    return deletePostResult
   }
 
   public async updateDraft(id: string, title?: string, body?: string){
