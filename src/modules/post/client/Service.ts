@@ -24,7 +24,7 @@ export default class Service {
   }
 
   public async checkUser(userId: string, postId: string){
-    const post = await this.factory.getPost(postId)
+    const post = await this.factory.findPostWithId(postId)
     if(!post){
       return false
     }
@@ -35,8 +35,21 @@ export default class Service {
     return true
   }
 
+  public async getAllPosts(userId: string, postStatus: string){
+    const posts = await this.factory.findPostsWithStatus(userId, postStatus)
+    return posts
+  }
+
+  public async getOnePost(id: string){
+    const post =  await this.factory.findPostWithId(id)
+    if(!post){
+      return false
+    }
+    return post
+  }
+
   public async deleteFile(id: string, imageNames: string[]): Promise<boolean>{
-    const post = await this.factory.getPost(id)
+    const post = await this.factory.findPostWithId(id)
 
     if(!post){
       return false
@@ -58,7 +71,7 @@ export default class Service {
   }
 
   public async deletePost(id: string){
-    const post = await this.factory.getPost(id)
+    const post = await this.factory.findPostWithId(id)
     if(!post){
       throw new NotFoundException('post not found!')
     }
@@ -82,7 +95,7 @@ export default class Service {
   }
 
   public async updateGallery(id: string, gallery: string[]){
-    const post = await this.factory.getPost(id)
+    const post = await this.factory.findPostWithId(id)
 
     if(!post){
       return false

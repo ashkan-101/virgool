@@ -2,6 +2,7 @@ import Service from "./Service";
 import ServerException from "../../../exceptions/ServerException";
 import { Request, Response, NextFunction, Express } from "express";
 import ValidationException from "../../../exceptions/ValidationException";
+import NotFoundException from "../../../exceptions/NotFoundException";
 
 export default class Controller {
   private readonly Service: Service
@@ -116,6 +117,39 @@ export default class Controller {
   
       res.status(200).send({
         success: true
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  public async posts(req: Request, res: Response, next: NextFunction){
+    try {
+      const postStatus = req.query.postStatus as string
+      const userId = req.user?._id as string
+      const allPosts = await this.Service.getAllPosts(userId.toString(), postStatus)
+
+      res.status(200).send({
+        success: true,
+        allPosts
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  public async post(req: Request, res: Response, next: NextFunction){
+    try {
+      const postId = req.params.id
+
+      const post = await this.Service.getOnePost(postId)
+  
+      if(!post){
+        throw new NotFoundException('post not found')
+      }
+      res.status(200).send({
+        success: true,
+        post
       })
     } catch (error) {
       next(error)

@@ -14,7 +14,7 @@ export default class Factory {
     return await this.postRepository.create(postParams)
   }
 
-  public async getPost(id: string){
+  public async findPostWithId(id: string){
     return await this.postRepository.findOne(id)
   }
 
@@ -25,5 +25,10 @@ export default class Factory {
 
   public async deletePostWithID(id: string){
     return await this.postRepository.deleteOne(id)
+  }
+
+  public async findPostsWithStatus(userId: string, status: string){
+    const queryParams = {author: userId, status: status}
+   return await this.postRepository.findMany(queryParams)
   }
 }

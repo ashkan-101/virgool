@@ -9,5 +9,7 @@ postRouter.use(auth)
 postRouter.post('/create', postController.newDraft.bind(postController))
 postRouter.patch('/edit-draft/:id', postController.editDraft.bind(postController))
 postRouter.delete('/delete/:id', postController.deletePost.bind(postController))
+postRouter.get('/get-all', postController.posts.bind(postController))
+postRouter.get('/get/:id', postController.post.bind(postController))
 
 export default postRouter

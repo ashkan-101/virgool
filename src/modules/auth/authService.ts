@@ -31,7 +31,7 @@ export default class Authservice {
     if(getCode.expireCode < Date.now()){
       return false
     }
-    console.log(Date.now());
+    
     const checkCode = compare(code, getCode.code)
 
     if(!checkCode){

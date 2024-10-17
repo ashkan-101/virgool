@@ -7,7 +7,7 @@ export default interface IPost extends Document{
   body: string
   gallery: string[]
   tags: string[]
-  status: PostStatus
+  status: String
   likes: number
   createdAt: Date
   updatedAt: Date
