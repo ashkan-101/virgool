@@ -1,6 +1,7 @@
 import Service from "./Service";
 import ServerException from "../../../exceptions/ServerException";
 import { Request, Response, NextFunction, Express } from "express";
+import ValidationException from "../../../exceptions/ValidationException";
 
 export default class Controller {
   private readonly Service: Service
@@ -43,6 +44,12 @@ export default class Controller {
       const id = req.params.id
       const title: string | undefined = req.body.title
       const body: string | undefined = req.body.body
+
+      const checkUser = await this.Service.checkUser(req.user?._id as string, id)
+
+      if(!checkUser){
+        throw new ValidationException('The current user is invalid!')
+      }
       
       //image names for deleted
       const imageNames: string[] | undefined = req.body.imageNames
@@ -94,6 +101,12 @@ export default class Controller {
   public async deletePost(req: Request, res: Response, next: NextFunction){
     try {
       const id = req.params.id as string
+
+      const checkUser = this.Service.checkUser(req.user?._id as string, id)
+
+      if(!checkUser){
+        throw new ValidationException("The current user is invalid!")
+      }
 
       const result = await this.Service.deletePost(id)
   

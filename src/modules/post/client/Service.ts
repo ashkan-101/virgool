@@ -23,6 +23,18 @@ export default class Service {
     return newPost
   }
 
+  public async checkUser(userId: string, postId: string){
+    const post = await this.factory.getPost(postId)
+    if(!post){
+      return false
+    }
+
+    if(userId !== post.author){
+      return false
+    }
+    return true
+  }
+
   public async deleteFile(id: string, imageNames: string[]): Promise<boolean>{
     const post = await this.factory.getPost(id)
 
