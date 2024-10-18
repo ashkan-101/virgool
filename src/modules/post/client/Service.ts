@@ -23,7 +23,7 @@ export default class Service {
     return newPost
   }
 
-  public async checkUser(userId: string, postId: string){
+  public async checkUser(userId: string, postId: string): Promise<boolean>{
     const post = await this.factory.findPostWithId(postId)
     if(!post){
       return false
@@ -32,6 +32,7 @@ export default class Service {
     if(userId !== post.author){
       return false
     }
+    
     return true
   }
 
@@ -54,6 +55,9 @@ export default class Service {
     if(!post){
       return false
     }
+
+    if(imageNames && imageNames.length > 0)
+
     imageNames.forEach((name) => {
       const index = post.gallery.indexOf(name)
       if(index > -1){
@@ -110,5 +114,15 @@ export default class Service {
     }
 
     return true
+  }
+
+  public async publishedPost(postId: string, tags: string[]){
+    const params: Partial<IPost> = {tags: tags, status: 'published'}
+    const result = await this.factory.publishedPost(postId, params)
+    
+    if(!result){
+      return false
+    }
+    return result
   }
 }

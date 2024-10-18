@@ -155,4 +155,29 @@ export default class Controller {
       next(error)
     }
   }
+
+  public async published(req: Request, res: Response, next: NextFunction){
+    try {
+      const postId = req.params.id
+      const tags: string[] = req.body.tags as string[]
+     
+      const checkUser = this.Service.checkUser(req.user?._id as string, postId)
+  
+      if(!checkUser){
+        throw new ValidationException('The current user is invalid!')
+      }
+  
+      const publishedResult = await this.Service.publishedPost(postId, tags)
+  
+      if(!publishedResult){
+        throw new ServerException('published post failed...try again later')
+      }
+  
+      res.status(200).send({
+        success: publishedResult
+      })
+    } catch (error) {
+      next(error)
+    }
+  }
 }

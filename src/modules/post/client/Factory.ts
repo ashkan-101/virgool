@@ -31,4 +31,8 @@ export default class Factory {
     const queryParams = {author: userId, status: status}
    return await this.postRepository.findMany(queryParams)
   }
+
+  public async publishedPost(postId: string, params: Partial<IPost>){
+    return await this.postRepository.updateOne(postId, params)
+  }
 }
