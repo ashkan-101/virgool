@@ -1,4 +1,4 @@
-type Gender = 'man' | 'woman' | 'anothed'
+type Gender = 'man' | 'woman' | 'another'
 
 export {
   Gender

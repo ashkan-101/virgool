@@ -1,6 +1,7 @@
 import IUserRepository from "./IUserRepository";
 import userModel from '../model/User'
 import IUser from "../model/IUser";
+import { FilterQuery } from "mongoose";
 
 export default class UserMongoRepository implements IUserRepository{
   public async findOne(id: string, relations?: string[]): Promise<IUser | null> {
@@ -15,7 +16,7 @@ export default class UserMongoRepository implements IUserRepository{
     }
   }
 
-  public async findMany(params: any, relations: string[]): Promise<IUser[]> {
+  public async findMany(params: FilterQuery<IUser>, relations: string[]): Promise<IUser[]> {
     const userQuery = await userModel.find(params)
     return userQuery
   }
@@ -35,7 +36,7 @@ export default class UserMongoRepository implements IUserRepository{
   }
   public async updateOne(id: string, params: Partial<IUser>): Promise<boolean> {
     const updateUser = await userModel.updateOne({_id: id}, params)
-    return updateUser.modifiedCount > 0
+    return updateUser.matchedCount > 0 && updateUser.acknowledged
   }
   updateMany(where: Partial<IUser>, params: Partial<IUser>): Promise<boolean> {
     throw new Error("Method not implemented.");

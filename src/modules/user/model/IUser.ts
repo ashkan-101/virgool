@@ -6,7 +6,7 @@ export default interface IUser extends Document{
   lastName: string
   userName: string
   bio: string
-  picture: string
+  avatar: string
   gender: Gender
   mobile: string
   email: string

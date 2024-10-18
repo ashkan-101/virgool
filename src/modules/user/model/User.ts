@@ -7,7 +7,7 @@ const userSchema = new Schema({
   lastName: {type: String, default: null},
   userName: {type: String, default: `user_${randomBytes(3).toString('hex')}`},
   bio: {type: String, default: null},
-  picture: {type: String, default: null},
+  avatar: {type: String, default: null},
   gender: {type: String, default: null},
   mobile: {type: String, required: true, unique: true},
   email: {type: String, default: null},
