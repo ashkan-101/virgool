@@ -49,10 +49,14 @@ export default class UserController {
         bio,
         birthday,
         gender,
-        avatar: avatarName
       }
-  
-      const resultUpdate = await this.service.updateUser(userId, newSettingsParams)
+
+      let lastAvatar: string | undefined
+      if(avatarName){
+        lastAvatar = req.user?.avatar
+      }
+      
+      const resultUpdate = await this.service.updateUser(userId, newSettingsParams, avatarName, lastAvatar)
   
       if(!resultUpdate){
         throw new ServerException('failed to updated settings!')
