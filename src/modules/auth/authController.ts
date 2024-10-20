@@ -1,8 +1,6 @@
-import { Request, Response, NextFunction } from "express";
 import Authservice from "./authService";
-import ValidationException from "../../exceptions/ValidationException";
-import NotFoundException from "../../exceptions/NotFoundException";
 import {sign} from '../../services/TokenService'
+import { Request, Response, NextFunction } from "express";
 
 
 export default class AuthController {
@@ -16,12 +14,8 @@ export default class AuthController {
     try {
       const {mobile} = req.body
       const newCode = await this.service.register(mobile)
-  
-      if(!newCode){
-        throw new ValidationException('this phone number is already used')
-      }
       
-      res.status(200).send({
+      res.status(201).send({
         newCode: newCode
       })
     } catch (error) {
@@ -31,16 +25,10 @@ export default class AuthController {
 
   public async finalizeRegistration(req: Request, res: Response, next: NextFunction){
     try {
-      const {code} = req.body
+      const {code, mobile} = req.body
       const codeId = req.params.id
-  
-      const checkCode = await this.service.checkCode(codeId, code)
-      
-      if(!checkCode){
-        throw new ValidationException('this code is not valid')
-      }
-      
-      const newUser = await this.service.newUser(checkCode.mobile)
+      await this.service.validateCode(codeId, code)
+      const newUser = await this.service.newUser(mobile)
       res.status(200).send({
         success: true,
         newUser
@@ -54,13 +42,7 @@ export default class AuthController {
   public async login(req: Request, res: Response, next: NextFunction){
     try {
       const {mobile} = req.body
-
       const newCode = await this.service.loginUser(mobile)
-  
-      if(!newCode){
-        throw new NotFoundException('not Found any user whith this information')
-      }
-
       res.status(200).send({
         newCode
       })
@@ -71,23 +53,14 @@ export default class AuthController {
 
   public async finalizeLogin(req: Request, res: Response, next: NextFunction){
     try {
-      const {code} = req.body
+      const {code, mobile} = req.body
       const codeId = req.params.id
   
-      const checkCode = await this.service.checkCode(codeId, code)
-
-      if(!checkCode){
-        throw new ValidationException('this code is not valid')
-      }
-
-      const user = await this.service.getUser(checkCode.mobile)
-
-      if(!user){
-        throw new NotFoundException('user not Found')
-      }
+      await this.service.validateCode(codeId, code)
+      const user = await this.service.getUser(mobile)
 
       res.status(200).send({
-        message: true,
+        success: true,
         token: sign({userId: user._id})
       })
     } catch (error) {

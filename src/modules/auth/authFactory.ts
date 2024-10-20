@@ -1,20 +1,15 @@
-import IRepository from "../contracts/IRepository";
-import IRegisterCode from "../registerCode/model/IRegisterCode";
 import IUserRepository from "../user/repositories/IUserRepository";
 import UserMongoRepository from "../user/repositories/UserMongoRepository";
+import IRegisterCodeRepository from "../registerCode/repositories/IRegisterCodeRepository";
 import RegisterCodeMongoRepository from '../registerCode/repositories/RegisterCodeMongoRepository'
 
 export default class AuthFactory {
   private readonly userRepository: IUserRepository
-  private readonly codeRepository: IRepository<IRegisterCode>
+  private readonly codeRepository: IRegisterCodeRepository
 
   constructor(){
     this.userRepository = new UserMongoRepository()
     this.codeRepository = new RegisterCodeMongoRepository()
-  }
-
-  public async checkPhoneNumber(mobile: string){
-    return await this.userRepository.findByMobile(mobile)
   }
 
   public async createCode(code: string, mobile: string){
@@ -24,17 +19,20 @@ export default class AuthFactory {
     })
   }
 
-  public async getCode(id: string){
-    const code = await this.codeRepository.findOne(id)
-    return code
+  public async findCodeWithId(id: string){
+    const result =  await this.codeRepository.findOne(id)
+    return result
+  }
+
+  public async deleteCodeInRepository(id: string){
+    return await this.codeRepository.deleteOne(id)
   }
 
   public async saveNewUser(mobile: string){
     return await this.userRepository.create({mobile})
   }
 
-  public async findUser(mobile: string){
-    const user = await this.userRepository.findByMobile(mobile)
-    return user
+  public async findUserWithMobile(mobile: string){
+  return await this.userRepository.findByMobile(mobile)
   }
 }
