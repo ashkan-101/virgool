@@ -13,7 +13,8 @@ const postSchema: Schema = new Schema({
   status: {type: String, enum: PostStatus, default: PostStatus.DRAFT},
   likes: {type: Number, default: 0},
   createdAt: {type: Date, default: Date.now()},
-  updatedAt: {type: Date, default: Date.now()}
+  updatedAt: {type: Date, default: Date.now()},
+  slug: {type: String, default: null}
 })
 
 postSchema.virtual('galleryUrl').get(function (this: IPost){

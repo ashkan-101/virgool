@@ -11,4 +11,5 @@ export default interface IPost extends Document{
   likes: number
   createdAt: Date
   updatedAt: Date
+  slug: string
 }

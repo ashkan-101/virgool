@@ -13,6 +13,10 @@ export default class PostMongoRepository implements IPostRepository {
     return post
   }
 
+  public async findBySlug(slug: string): Promise<IPost | null> {
+    return await postModel.findOne({slug: slug})
+  }
+
   public async create(params: Partial<IPost>): Promise<IPost>{
     return await postModel.create(params)
   }
