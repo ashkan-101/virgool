@@ -1,12 +1,13 @@
 import {join} from "path";
 import multer from "multer";
 import { Application } from "express";
+import FieldName from "./contracts/FieldName";
 
 const fileStorage = multer.diskStorage({
   destination(req, file, callback) {
-    if(file.fieldname === 'gallery'){
+    if(file.fieldname === FieldName.GALLERY){
       callback(null, join(process.cwd(), 'public', 'post-images'))
-    }else if(file.fieldname === 'avatar'){
+    }else if(file.fieldname === FieldName.AVATAR){
       callback(null, join(process.cwd(), 'public', 'avatars'))
     }
   },
