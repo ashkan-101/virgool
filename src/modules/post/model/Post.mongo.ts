@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import PostStatus from "../contracts/PostStatus";
-import IPost from "./IPost";
+import IPostMongo from "./contracts/IPostMongo";
 import { config } from "dotenv";
 config()
 
@@ -11,16 +11,16 @@ const postSchema: Schema = new Schema({
   gallery: {type: [String], default: null},
   tags: {type: [String], default: null},
   status: {type: String, enum: PostStatus, default: PostStatus.DRAFT},
-  likes: {type: Number, default: 0},
+  likes: {type: [String], default: null},
   createdAt: {type: Date, default: Date.now()},
   updatedAt: {type: Date, default: Date.now()},
   slug: {type: String, default: null}
 })
 
-postSchema.virtual('galleryUrl').get(function (this: IPost){
+postSchema.virtual('galleryUrl').get(function (this: IPostMongo){
   return this.gallery.map((item: string) => {
     return `${process.env.APP_URL}:${process.env.APP_POST}/public/post-images/${item}`
   })
 })
 
-export default model<IPost>('Post', postSchema)
+export default model<IPostMongo>('Post', postSchema)
