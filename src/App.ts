@@ -2,19 +2,24 @@ import Boot from "./boot";
 import express from 'express'
 import { Application } from "express";
 import RouterService from "./router/RouteService";
-import startMiddlewares from './middlewares/index'
+import startMiddlewares from './middlewares/index';
+import Database from "./Infrastructures/connections";
+import { config } from "dotenv";
+config()
 
 export default class App{
-  private readonly app: Application
+  private readonly boot: Boot
   private readonly port: number
   private router: RouterService
-  private readonly boot: Boot
+  private readonly app: Application
+  private readonly database: Database
   
   constructor(port: number){
     this.port = port
     this.app = express()
-    this.router = new RouterService(this.app)
     this.boot = new Boot(this.app)
+    this.database = new Database()
+    this.router = new RouterService(this.app)
   }
 
   public start(){
@@ -23,6 +28,7 @@ export default class App{
     startMiddlewares(this.app)
     this.app.listen(this.port, () => {
       console.log('application is running ...');
+      this.database.connectToDatabase(process.env.APP_DATABASE as string)
     })
   }
 }
