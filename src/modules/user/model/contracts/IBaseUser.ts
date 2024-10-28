@@ -1,7 +1,6 @@
-import { Document } from "mongoose";
-import { Gender } from "../contracts/UserTypes";
+import Gender from "../../contracts/Gender";
 
-export default interface IUser extends Document{
+export default interface IBaseUser{
   firstName: string
   lastName: string
   userName: string

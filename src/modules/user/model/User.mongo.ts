@@ -1,4 +1,4 @@
-import IUser from "./IUser";
+import IUserMongo from './contracts/IUserMongo';
 import { Schema, model } from "mongoose";
 import {randomBytes} from 'crypto'
 
@@ -19,4 +19,4 @@ const userSchema = new Schema({
   updatedAt: {type: Date, default: Date.now()},
 })
 
-export default model<IUser>('User', userSchema)
+export default model<IUserMongo>('User', userSchema)
