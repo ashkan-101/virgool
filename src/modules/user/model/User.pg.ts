@@ -1,12 +1,13 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, BaseEntity, OneToMany } from "typeorm";
 import IBaseUser from "./contracts/IBaseUser";
+import Post from "../../post/model/Post.pg";
 import Gender from "../contracts/Gender";
 import {randomBytes} from 'crypto'
 
 @Entity('user')
 export default class User extends BaseEntity implements IBaseUser{
   @PrimaryGeneratedColumn('uuid')
-  id!: string
+  _id!: string
 
   @Column({type: 'varchar', length: 15, nullable: true})
   firstName!:string
@@ -43,6 +44,9 @@ export default class User extends BaseEntity implements IBaseUser{
 
   @Column({type: 'date', nullable: true})
   birthday!: Date
+
+  @OneToMany(() => Post, post => post.author)
+  posts!: Post[]
 
   @CreateDateColumn()
   createdAt!: Date

@@ -1,6 +1,7 @@
 import Gender from "../../contracts/Gender";
 
 export default interface IBaseUser{
+  _id: string
   firstName: string
   lastName: string
   userName: string
