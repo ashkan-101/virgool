@@ -1,7 +1,9 @@
-import IUser from "../model/IUser";
+import IUser from "../model/contracts/IUserMongo";
 import UserFactory from "./Factory";
 import { deleteFile } from "../../../services/DeleteFileService";
 import { join } from "path";
+import ServerException from "../../../exceptions/ServerException";
+import ValidationException from "../../../exceptions/ValidationException";
 
 export default class UserService {
   private readonly factory: UserFactory
@@ -17,16 +19,21 @@ export default class UserService {
     }
     const result = await this.factory.saveUpdates(userId, newParams)
     if(!result){
-      return false
+      throw new ServerException('failed to update settings')
     }
-    return true
   }
 
-  public async checkUserName(userName: string){
+  public async validateUserName(userName: string){
     const userNames = await this.factory.findByUserName(userName)
     if(userNames.length > 0){
-      return false
+      throw new ValidationException('this userName already used!')
     }
-    return true
+  }
+
+  public async validateMobile(mobile: string){
+    const result = await this.factory.findByMobile(mobile)
+    if(result){
+      throw new ValidationException('this phone number already used!')
+    }
   }
 }

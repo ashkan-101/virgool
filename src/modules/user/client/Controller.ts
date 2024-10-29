@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import UserService from "./Service";
-import { Gender } from "../contracts/UserTypes";
-import IUser from "../model/IUser";
+import Gender from "../contracts/Gender";
+import IUser from "../model/contracts/IBaseUser";
 import ServerException from "../../../exceptions/ServerException";
 import ValidationException from "../../../exceptions/ValidationException";
 
@@ -28,7 +28,6 @@ export default class UserController {
       next(error)
     }
   }
-
   public async newSettings (req: Request, res: Response, next: NextFunction){
     try {
       const {firstName, lastName, bio, birthday} = req.body
@@ -56,14 +55,10 @@ export default class UserController {
         lastAvatar = req.user?.avatar
       }
       
-      const resultUpdate = await this.service.updateUser(userId, newSettingsParams, avatarName, lastAvatar)
-  
-      if(!resultUpdate){
-        throw new ServerException('failed to updated settings!')
-      }
+      await this.service.updateUser(userId, newSettingsParams, avatarName, lastAvatar)
   
       res.status(200).send({
-        success: resultUpdate
+        success: true
       })
     } catch (error) {
       next(error)
@@ -84,34 +79,20 @@ export default class UserController {
       next(error)
     }
   }
-
   public async editAccount(req: Request, res: Response, next: NextFunction) {
     try {
-      const {email, mobile} = req.body
-      const userName = req.body.userName
-      const checkUserName = await this.service.checkUserName(userName)
-      console.log({checkUserName});
-      
-      let userNameChecked: string | undefined
-      if(!checkUserName){
-        throw new ValidationException('this userName already exist!')
-      }
-      userNameChecked = userName
+      const {email, mobile, userName} = req.body
+      await this.service.validateUserName(userName)
+      await this.service.validateMobile(mobile)
       const accountParams: Partial<IUser> = {
-        userName: userNameChecked,
+        userName,
         email,
         mobile
       }
       const userId = req.user?._id as string
-
-      const result = await this.service.updateUser(userId, accountParams)
-
-      if(!result){
-        throw new ServerException('failed to updated account')
-      }
-
+      await this.service.updateUser(userId, accountParams)
       res.status(200).send({
-        success: result
+        success: true
       })
     } catch (error) {
       next(error)
