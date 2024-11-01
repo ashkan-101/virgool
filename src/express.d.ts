@@ -1,10 +1,11 @@
 import { Request } from "express";
-import IUser from "./modules/user/model/IUser";
+import IUserPG from "./modules/user/model/contracts/IUserPG";
+import IUserMongo from "./modules/user/model/contracts/IUserMongo";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: IUser
+      user?: IUserMongo | IUserPG
     }
   }
 }

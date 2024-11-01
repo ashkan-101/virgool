@@ -2,7 +2,6 @@ import Authservice from "./authService";
 import {sign} from '../../services/TokenService'
 import { Request, Response, NextFunction } from "express";
 
-
 export default class AuthController {
   private readonly service: Authservice
 
@@ -14,15 +13,13 @@ export default class AuthController {
     try {
       const {mobile} = req.body
       const newCode = await this.service.register(mobile)
-      
       res.status(201).send({
-        newCode: newCode
+        newCode
       })
     } catch (error) {
       next(error)
     }
   }
-
   public async finalizeRegistration(req: Request, res: Response, next: NextFunction){
     try {
       const {code, mobile} = req.body
@@ -38,7 +35,6 @@ export default class AuthController {
       next(error)
     }
   }
-
   public async login(req: Request, res: Response, next: NextFunction){
     try {
       const {mobile} = req.body
@@ -50,7 +46,6 @@ export default class AuthController {
       next(error)
     }
   }
-
   public async finalizeLogin(req: Request, res: Response, next: NextFunction){
     try {
       const {code, mobile} = req.body
