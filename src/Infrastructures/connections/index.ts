@@ -1,19 +1,20 @@
+import DatabaseName from "../../modules/contracts/DatabaseName"
 import mongoDBConnection from "./mongoDB"
 import postgresConnection from "./postgresQL"
 
 export default class Database {
-  private database: Map<string,() => Promise<void>> = new Map<string,() => Promise<void>>()
+  private database: Map<DatabaseName,() => Promise<void>> = new Map<DatabaseName,() => Promise<void>>()
 
   constructor(){
-    this.database.set('mongodb', mongoDBConnection)
-    this.database.set('postgres', postgresConnection)
+    this.database.set(DatabaseName.MONGODB, mongoDBConnection)
+    this.database.set(DatabaseName.POSTGRES, postgresConnection)
   }
 
-  private getDatabase(databaseName: string){
+  private getDatabase(databaseName: DatabaseName){
     return this.database.get(databaseName)
   }
 
-  public async connectToDatabase(databaseName: string){
+  public async connectToDatabase(databaseName: DatabaseName){
     const connection = this.getDatabase(databaseName)
     if(connection){
       await connection()

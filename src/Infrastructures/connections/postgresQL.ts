@@ -1,4 +1,7 @@
 import { DataSource } from "typeorm";
+import User from '../../modules/user/model/User.pg';
+import Post from '../../modules/post/model/Post.pg';
+import RegisterCode from '../../modules/registerCode/model/RegisterCode.pg';
 import { config } from "dotenv";
 config()
 
@@ -10,7 +13,7 @@ const dataSource = new DataSource({
   password: process.env.PG_PASSWORD,
   database: process.env.PG_DATABASE,
   synchronize: process.env.PG_SYNCHRONIZE as unknown as boolean,
-  entities: []
+  entities: [RegisterCode, User, Post]
 })
 
 const postgresConnection = async () => {
