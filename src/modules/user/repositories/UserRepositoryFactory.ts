@@ -1,10 +1,11 @@
-import IUserRepository from "./IUserRepository";
+import UserPgRepository from "./UserPGRepository";
 import UserMongoRepository from "./UserMongoRepository";
-import UserPgRepository from "./UserPgRepository";
 import DatabaseName from "../../contracts/DatabaseName";
+import IUserPGRepository from "./contracts/IUserPGRepository";
+import IUserMongoRepository from "./contracts/IUserMongoRepository";
 
 export default class UserRepositoryFactory {
-  private repositories: Map<DatabaseName, IUserRepository> = new Map<DatabaseName, IUserRepository>()
+  private repositories: Map<DatabaseName, IUserMongoRepository | IUserPGRepository> = new Map<DatabaseName, IUserMongoRepository | IUserPGRepository>()
 
   constructor(){
     this.repositories.set(DatabaseName.MONGODB, new UserMongoRepository())
@@ -12,7 +13,6 @@ export default class UserRepositoryFactory {
   }
 
   public getRepository(DatabaseName: DatabaseName){
-    const repository: IUserRepository = this.repositories.get(DatabaseName)!
-    return repository
+    return this.repositories.get(DatabaseName)!
   }
 }

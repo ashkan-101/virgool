@@ -1,11 +1,11 @@
 import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, BaseEntity, OneToMany } from "typeorm";
-import IBaseUser from "./contracts/IBaseUser";
-import Post from "../../post/model/Post.pg";
-import Gender from "../contracts/Gender";
 import {randomBytes} from 'crypto'
+import Gender from "../contracts/Gender";
+import IUserPG from "./contracts/IUserPG";
+import Post from "../../post/model/Post.pg";
 
 @Entity('user')
-export default class User extends BaseEntity implements IBaseUser{
+export default class User extends BaseEntity implements IUserPG{
   @PrimaryGeneratedColumn('uuid')
   _id!: string
 

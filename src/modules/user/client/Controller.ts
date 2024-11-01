@@ -2,8 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import UserService from "./Service";
 import Gender from "../contracts/Gender";
 import IUser from "../model/contracts/IBaseUser";
-import ServerException from "../../../exceptions/ServerException";
-import ValidationException from "../../../exceptions/ValidationException";
 
 export default class UserController {
   private readonly service: UserService

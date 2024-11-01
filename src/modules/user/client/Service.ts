@@ -1,7 +1,7 @@
-import IUser from "../model/contracts/IUserMongo";
-import UserFactory from "./Factory";
-import { deleteFile } from "../../../services/DeleteFileService";
 import { join } from "path";
+import UserFactory from "./Factory";
+import IBaseUser from "../model/contracts/IBaseUser";
+import { deleteFile } from "../../../services/DeleteFileService";
 import ServerException from "../../../exceptions/ServerException";
 import ValidationException from "../../../exceptions/ValidationException";
 
@@ -12,8 +12,8 @@ export default class UserService {
     this.factory = new UserFactory()
   }
 
-  public async updateUser(userId: string, params: Partial<IUser>, avatar?: string, lastAvatar?: string){
-    const newParams: Partial<IUser> = {...params, avatar}
+  public async updateUser(userId: string, params: Partial<IBaseUser>, avatar?: string, lastAvatar?: string){
+    const newParams: Partial<IBaseUser> = {...params, avatar}
     if(lastAvatar){
       deleteFile(join(process.cwd(), 'public', 'avatars', lastAvatar))
     }
@@ -22,14 +22,12 @@ export default class UserService {
       throw new ServerException('failed to update settings')
     }
   }
-
   public async validateUserName(userName: string){
     const userNames = await this.factory.findByUserName(userName)
     if(userNames.length > 0){
       throw new ValidationException('this userName already used!')
     }
   }
-
   public async validateMobile(mobile: string){
     const result = await this.factory.findByMobile(mobile)
     if(result){

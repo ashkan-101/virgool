@@ -1,9 +1,9 @@
-import IUserRepository from "./IUserRepository";
+import { FilterQuery } from "mongoose";
 import userModel from '../model/User.mongo'
 import IUserMongo from "../model/contracts/IUserMongo";
-import { FilterQuery } from "mongoose";
+import IUserMongoRepository from './contracts/IUserMongoRepository';
 
-export default class UserMongoRepository implements IUserRepository{
+export default class UserMongoRepository implements IUserMongoRepository{
   public async findOne(id: string, relations?: string[]): Promise<IUserMongo | null> {
       const userQuery = await userModel.findById(id)
       return userQuery
