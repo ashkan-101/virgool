@@ -1,5 +1,3 @@
-import IPost from "../post/model/IPost"
-
 export default interface IRepository<T>{
   findOne(id: string, relations?: string[]): Promise<T | null>
   findMany(params: Partial<T>, relations?: string[]): Promise<T[]>
