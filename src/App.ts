@@ -4,6 +4,7 @@ import { Application } from "express";
 import RouterService from "./router/RouteService";
 import startMiddlewares from './middlewares/index';
 import Database from "./Infrastructures/connections";
+import DatabaseName from "./modules/contracts/DatabaseName";
 import { config } from "dotenv";
 config()
 
@@ -28,7 +29,7 @@ export default class App{
     startMiddlewares(this.app)
     this.app.listen(this.port, () => {
       console.log('application is running ...');
-      this.database.connectToDatabase(process.env.APP_DATABASE as string)
+      this.database.connectToDatabase(process.env.APP_DATABASE as DatabaseName)
     })
   }
 }
