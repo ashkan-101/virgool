@@ -1,10 +1,10 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, BaseEntity, OneToMany, ManyToOne } from "typeorm";
-import IBasePost from "./contracts/IBasePost";
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn } from "typeorm";
 import PostStatus from "../contracts/PostStatus";
 import User from '../../user/model/User.pg'
+import IPostPG from "./contracts/IPostPG";
  
 @Entity('post')
-export default class Post extends BaseEntity implements IBasePost {
+export default class Post extends BaseEntity implements IPostPG {
   @PrimaryGeneratedColumn('uuid')
   _id!: string
 
@@ -14,22 +14,23 @@ export default class Post extends BaseEntity implements IBasePost {
   @Column({type: 'text', nullable: true})
   body!: string;
 
-  @Column('text', {array: true, nullable: true})
+  @Column({type: 'jsonb', nullable: true})
   gallery!: string[];
 
-  @Column('text', {array: true, nullable: true})
+  @Column({type: 'jsonb', nullable: true})
   tags!: string[];
 
-  @Column({type: 'enum', enum: PostStatus, default: PostStatus.DRAFT})
-  status!: string;
+  @Column({type: 'varchar', enum: PostStatus, default: PostStatus.DRAFT})
+  status!: PostStatus;
 
-  @Column('text', {array: true, nullable: true})
+  @Column({type: 'jsonb', nullable: true})
   likes!: string[];
 
   @Column({type: 'varchar', nullable: true})
   slug!: string;
 
   @ManyToOne(() => User, user => user.posts)
+  @JoinColumn({name: 'author'})
   author!: User;
 
   @CreateDateColumn()
