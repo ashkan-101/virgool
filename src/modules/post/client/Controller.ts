@@ -1,7 +1,10 @@
 import Service from "./Service";
-import IPost from "../model/IPost";
+import PostStatus from "../contracts/PostStatus";
+import IPost from "../model/contracts/IBasePost";
 import { Request, Response, NextFunction, Express } from "express";
-import ValidationException from "../../../exceptions/ValidationException";
+
+import IPostMongo from "../model/contracts/IPostMongo";
+import IPostPG from "../model/contracts/IPostPG";
 
 export default class Controller {
   private readonly Service: Service;
@@ -22,7 +25,7 @@ export default class Controller {
       }
       const userId = req.user?._id as string;
 
-      const postParams: Partial<IPost> = {
+      const postParams: Partial<IPostMongo | IPostPG> = {
         author: userId,
         title,
         body,
@@ -70,7 +73,7 @@ export default class Controller {
         gallery: galleryNames,
       };
 
-      await this.Service.editDraft(postId, newParams);
+      // await this.Service.editDraft(postId, newParams);
 
       res.status(200).send({
         success: true,
@@ -95,15 +98,15 @@ export default class Controller {
   }
   public async posts(req: Request, res: Response, next: NextFunction) {
     try {
-      const postStatus = req.query.poststatus as string;
+      const postStatus = req.query.poststatus as PostStatus;
       const userId = req.user?._id as string;
       const allPosts = await this.Service.getAllPosts(userId.toString(), postStatus);
-
       res.status(200).send({
         success: true,
         allPosts,
       });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }

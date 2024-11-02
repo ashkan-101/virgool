@@ -1,11 +1,16 @@
 import { join } from "path";
 import Factory from "./Factory";
-import IPost from "../model/IPost";
+import IPost from "../model/contracts/IBasePost";
 import PostStatus from "../contracts/PostStatus";
 import { deleteFile } from "../../../services/DeleteFileService";
 import ServerException from "../../../exceptions/ServerException";
 import NotFoundException from "../../../exceptions/NotFoundException";
 import ValidationException from "../../../exceptions/ValidationException";
+import IPostMongo from "../model/contracts/IPostMongo";
+import IPostPG from "../model/contracts/IPostPG";
+import PostPG from "../model/Post.pg";
+import DatabaseName from "../../contracts/DatabaseName";
+import User from "../../user/model/User.pg";
 
 export default class Service {
   private readonly factory: Factory
@@ -22,12 +27,24 @@ export default class Service {
     }
     return slug
   }
+  private async savePost(post: IPostMongo | IPostPG){
+    if('save' in post){
+      const result = await post.save()
+      return result
+    }else {
+      const result = await PostPG.save({...post})
+      return result
+    }
+  }
   public async validateUser(userId: string, postId: string){
     const post = await this.factory.findPostWithId(postId)
+    console.log(post);
     if(!post){
       throw new NotFoundException('not found any post with this information')
     }
-    if(post.author.toString() !== userId.toString()){
+    if(process.env.APP_DATABASE === DatabaseName.MONGODB && post.author.toString() !== userId.toString()){
+      throw new ValidationException('The current user is not valid!')
+    }else if(process.env.APP_DATABASE === DatabaseName.POSTGRES && (post.author as User)._id !== userId){
       throw new ValidationException('The current user is not valid!')
     }
   }
@@ -45,14 +62,13 @@ export default class Service {
         deleteFile(join(process.cwd(), 'public', 'post-images', name))
       }
     })
-
-    const updateGallery = await post.save()
+    const updateGallery = await this.savePost(post)
     if(!updateGallery){
       throw new ServerException('There was a problem deleting the file')
     }
   }
-
-  public async newDraft(params: Partial<IPost>){
+  
+  public async newDraft(params: Partial<IPostMongo | IPostPG>){
     let slug: string | undefined
     if(params.title){
       slug = await this.slugGenerator(params.title)
@@ -78,11 +94,10 @@ export default class Service {
     }
   }
   public async deletePost(id: string){
-    const post = await this.factory.findPostWithId(id)
+    const post = await this.getPostWithId(id)
     if(post === null){
       throw new NotFoundException('post not found!')
     }
-
     if(post.gallery && post.gallery.length > 0){
       post.gallery.forEach((name) => {
         deleteFile(join(process.cwd(), 'public', 'post-images', name))
@@ -93,7 +108,7 @@ export default class Service {
       throw new ServerException('There was a problem deleting the post')
     }
   }
-  public async getAllPosts(userId: string, postStatus: string){
+  public async getAllPosts(userId: string, postStatus: PostStatus){
     const posts = await this.factory.findPostsWithStatus(userId, postStatus)
     return posts
   }
