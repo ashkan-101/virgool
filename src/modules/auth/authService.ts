@@ -64,7 +64,7 @@ export default class Authservice {
     const checkPhoneNumber = await this.checkPhoneNumber(mobile)
 
     if(!checkPhoneNumber){
-      throw new NotFoundException('not found user with this mobile number')
+      throw new NotFoundException('not found any user with this mobile number')
     }
 
     const createNewCode = Math.random().toString().slice(3,9)

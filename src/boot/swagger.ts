@@ -1,6 +1,8 @@
 import { Application } from "express";
 import swaggerJSDoc ,{Options} from "swagger-jsdoc";
 import swaggerUi from 'swagger-ui-express'
+import { config } from "dotenv";
+config()
  
 const swaggerOptions: Options = {
   definition: {
