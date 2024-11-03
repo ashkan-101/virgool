@@ -3,6 +3,7 @@ import {randomBytes} from 'crypto'
 import Gender from "../contracts/Gender";
 import IUserPG from "./contracts/IUserPG";
 import Post from "../../post/model/Post.pg";
+import Comment from "../../comment/model/Comment.pg";
 
 @Entity('user')
 export default class User extends BaseEntity implements IUserPG{
@@ -53,4 +54,8 @@ export default class User extends BaseEntity implements IUserPG{
 
   @UpdateDateColumn()
   updatedAt!: Date
+
+  
+  @OneToMany(() => Comment, comment => comment.user)
+  comments!: Comment[]
 }

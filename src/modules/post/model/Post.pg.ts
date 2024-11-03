@@ -1,7 +1,8 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn, OneToMany } from "typeorm";
 import PostStatus from "../contracts/PostStatus";
 import User from '../../user/model/User.pg'
 import IPostPG from "./contracts/IPostPG";
+import Comment from "../../comment/model/Comment.pg";
  
 @Entity('post')
 export default class Post extends BaseEntity implements IPostPG {
@@ -38,4 +39,8 @@ export default class Post extends BaseEntity implements IPostPG {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+
+  @OneToMany(() => Comment, comment => comment.post)
+  comments!: Comment[]
 }

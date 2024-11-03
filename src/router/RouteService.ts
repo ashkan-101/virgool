@@ -7,6 +7,8 @@ import postRouter from "../modules/post/client/Router";
 
 import userRouter from "../modules/user/client/Router";
 
+import commentRourter from "../modules/comment/client/Router";
+
 
 
 export default class RouterService{
@@ -26,6 +28,8 @@ export default class RouterService{
     this.router.addRouter('/api/v1/post', postRouter)
 
     this.router.addRouter('/api/v1/user', userRouter)
+
+    this.router.addRouter('/api/v1/comment', commentRourter)
   }
 
   public run(){

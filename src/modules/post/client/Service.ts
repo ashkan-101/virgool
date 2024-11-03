@@ -38,7 +38,6 @@ export default class Service {
   }
   public async validateUser(userId: string, postId: string){
     const post = await this.factory.findPostWithId(postId)
-    console.log(post);
     if(!post){
       throw new NotFoundException('not found any post with this information')
     }
