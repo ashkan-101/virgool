@@ -8,6 +8,8 @@ const controller: AuthController = new AuthController()
  * @swagger
  * /api/v1/auth/register:
  *   post:
+ *     tags:
+ *       - auth
  *     summary: Register a new user
  *     description: This endpoint allows a new user to register using their mobile number. Upon successful registration, a new code is generated and sent back to the user.
  *     requestBody:
@@ -51,6 +53,8 @@ authRouter.post('/register', controller.register.bind(controller))
  * @swagger
  * /api/v1/auth/register-check/{id}:
  *   post:
+ *     tags:
+ *       - auth
  *     summary: Verify registration code and create new user
  *     description: This endpoint verifies the provided registration code and mobile number, then creates a new user if the code is valid.
  *     parameters:
@@ -123,6 +127,8 @@ authRouter.post('/register-check/:id', controller.finalizeRegistration.bind(cont
  * @swagger
  * /api/v1/auth/login:
  *   post:
+ *     tags:
+ *       - auth
  *     summary: Login and request verification code
  *     description: This endpoint allows a user to log in by providing their mobile number. A verification code will be sent to the user if the mobile number is registered.
  *     parameters:
@@ -175,6 +181,8 @@ authRouter.post('/login', controller.login.bind(controller))
  * @swagger
  * /api/v1/auth/login-check/{id}:
  *   post:
+ *     tags:
+ *       - auth
  *     summary: Validate login code and generate token
  *     description: "This endpoint validates the provided login code and mobile number, then generates a token for the user if the code is valid. The generated token should be included in the headers of subsequent requests under the Authorization key."
  *     parameters:
