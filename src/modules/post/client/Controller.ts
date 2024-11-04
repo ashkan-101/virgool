@@ -73,7 +73,7 @@ export default class Controller {
         gallery: galleryNames,
       };
 
-      // await this.Service.editDraft(postId, newParams);
+      await this.Service.editDraft(postId, newParams);
 
       res.status(200).send({
         success: true,
@@ -96,7 +96,7 @@ export default class Controller {
       next(error);
     }
   }
-  public async posts(req: Request, res: Response, next: NextFunction) {
+  public async getPosts(req: Request, res: Response, next: NextFunction) {
     try {
       const postStatus = req.query.poststatus as PostStatus;
       const userId = req.user?._id as string;
@@ -106,7 +106,6 @@ export default class Controller {
         allPosts,
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
