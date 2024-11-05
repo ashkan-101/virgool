@@ -13,6 +13,7 @@ export default class Subcategory extends BaseEntity implements ISubcategoryPG {
   title!: string;
 
   @ManyToOne(() => Category, category => category.subcategory, {onDelete: 'CASCADE'})
+  @JoinColumn({name: 'category'})
   category!: Category
 
   @OneToMany(()=> Post, post => post.subcategory)
