@@ -4,6 +4,7 @@ import Post from '../../modules/post/model/Post.pg';
 import RegisterCode from '../../modules/registerCode/model/RegisterCode.pg';
 import Comment from "../../modules/comment/model/Comment.pg";
 import { config } from "dotenv";
+import Category from "../../modules/category/model/PG/Category.PG";
 config()
 
 const dataSource = new DataSource({
@@ -14,7 +15,7 @@ const dataSource = new DataSource({
   password: process.env.PG_PASSWORD,
   database: process.env.PG_DATABASE,
   synchronize: process.env.PG_SYNCHRONIZE as unknown as boolean,
-  entities: [RegisterCode,Comment , User, Post]
+  entities: [RegisterCode,Comment , User, Post, Category]
 })
 
 const postgresConnection = async () => {
