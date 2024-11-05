@@ -9,7 +9,7 @@ export default class PostPGRepository implements IPostPGRepository {
     return await Post.findOneBy({slug: slug})
   }
   public async findOne(id: string, relations?: string[]): Promise<IPostPG | null> {
-    const result = await Post.findOne({where: {_id: id}, relations: ['author']})
+    const result = await Post.findOne({where: {_id: id}, relations: ['author', 'subcategory']})
     return result
   }
   public async findMany(params: FindOptionsWhere<Post>, relations?: string[]): Promise<IPostPG[]> {
@@ -17,7 +17,7 @@ export default class PostPGRepository implements IPostPGRepository {
     return resultQuery
   }
   public async findByStatus(userId: string, status: PostStatus): Promise<IPostPG[]> {
-    return await Post.find({where: {author: {_id: userId}, status: status}, relations: ['author']})
+    return await Post.find({where: {author: {_id: userId}, status: status}, relations: ['author', 'subcategory']})
   }
   public async create(params: Partial<IPostPG>): Promise<IPostPG> {
     const newPost = Post.create({...params})

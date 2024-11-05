@@ -125,8 +125,8 @@ export default class Service {
     }
     return resultQuery
   }
-  public async publishedPost(postId: string, tags: string[]){
-    const params: Partial<IPost> = {tags: tags, status: PostStatus.PUBLISHED}
+  public async publishedPost(postId: string, tags: string[], subId: string){
+    const params = {tags: tags, status: PostStatus.PUBLISHED, subcategory: subId}
     const result = await this.factory.publishedPost(postId, params)
     if(!result){
       throw new ServerException('failed to published post!')

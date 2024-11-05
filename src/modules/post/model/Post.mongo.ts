@@ -14,7 +14,8 @@ const postSchema: Schema = new Schema({
   likes: {type: [String], default: null},
   createdAt: {type: Date, default: Date.now()},
   updatedAt: {type: Date, default: Date.now()},
-  slug: {type: String, default: null}
+  slug: {type: String, default: null},
+  subcategory: {type: Schema.Types.ObjectId, required: true}
 })
 
 postSchema.virtual('galleryUrl').get(function (this: IPostMongo){

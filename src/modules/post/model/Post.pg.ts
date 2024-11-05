@@ -3,6 +3,7 @@ import PostStatus from "../contracts/PostStatus";
 import User from '../../user/model/User.pg'
 import IPostPG from "./contracts/IPostPG";
 import Comment from "../../comment/model/Comment.pg";
+import Subcategory from "../../category/model/PG/Subcategory.PG";
  
 @Entity('post')
 export default class Post extends BaseEntity implements IPostPG {
@@ -43,4 +44,8 @@ export default class Post extends BaseEntity implements IPostPG {
 
   @OneToMany(() => Comment, comment => comment.post)
   comments!: Comment[]
+
+  @ManyToOne(() => Subcategory , subcategory => subcategory.posts)
+  @JoinColumn({name: 'subcategory'})
+  subcategory!: Subcategory
 }

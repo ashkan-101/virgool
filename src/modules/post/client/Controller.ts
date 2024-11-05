@@ -137,9 +137,10 @@ export default class Controller {
     try {
       const postId = req.params.id;
       const tags: string[] = req.body.tags as string[];
+      const subId = req.body.subcategory
 
       await this.Service.validateUser(req.user?._id as string, postId);
-      await this.Service.publishedPost(postId, tags);
+      await this.Service.publishedPost(postId, tags, subId);
 
       res.status(200).send({
         success: true

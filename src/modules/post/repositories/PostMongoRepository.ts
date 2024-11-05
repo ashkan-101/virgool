@@ -5,7 +5,7 @@ import IPostMongoRepository from './contracts/IPostMongoRepository';
 
 export default class PostMongoRepository implements IPostMongoRepository {
   public async findOne(id: string, relations?: string[]): Promise<IPostMongo | null> {
-    return await postModel.findById(id)
+    return await postModel.findById(id).populate(['author', 'subcategory'])
   }
   public async findMany(params: FilterQuery<IPostMongo>, relations?: string[]): Promise<IPostMongo[]> {
     const post = await postModel.find(params)
@@ -15,7 +15,7 @@ export default class PostMongoRepository implements IPostMongoRepository {
     return await postModel.findOne({slug: slug})
   }
   public async findByStatus(userId: string, status: string): Promise<IPostMongo[]> {
-    return await postModel.find({author: userId, status: status})
+    return await postModel.find({author: userId, status: status}).populate(['author', 'subcategory'])
   }
   public async create(params: Partial<IPostMongo>): Promise<IPostMongo>{
     return await postModel.create(params)
