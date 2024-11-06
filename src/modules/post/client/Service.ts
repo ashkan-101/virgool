@@ -136,4 +136,19 @@ export default class Service {
       throw new ServerException('failed to published post!')
     }
   }
+  public async likePost(userId: string, postId: string){
+    const post = await this.getPostWithId(postId)
+    const likes = post.likes
+    const userIndex = likes.indexOf(userId)
+
+    if(userIndex > -1){
+      likes.splice(userIndex, 1)
+      await this.factory.updatePost(postId, {likes: likes})
+      return 'dislike'
+    }else{
+      likes.push(userId)
+      await this.factory.updatePost(postId, {likes: likes})
+      return 'like'
+    }
+  } 
 }

@@ -601,4 +601,6 @@ postRouter.get('/:slug', postController.getPostWithSlug.bind(postController))
  */
 postRouter.patch('/published/:id', postController.published.bind(postController))
 
+postRouter.patch('/:id/like', postController.likePost.bind(postController))
+
 export default postRouter

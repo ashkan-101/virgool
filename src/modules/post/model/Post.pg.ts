@@ -1,4 +1,4 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn, OneToMany } from "typeorm";
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, BaseEntity, ManyToOne, JoinColumn, OneToMany, ManyToMany } from "typeorm";
 import PostStatus from "../contracts/PostStatus";
 import User from '../../user/model/User.pg'
 import IPostPG from "./contracts/IPostPG";
@@ -25,7 +25,7 @@ export default class Post extends BaseEntity implements IPostPG {
   @Column({type: 'varchar', enum: PostStatus, default: PostStatus.DRAFT})
   status!: PostStatus;
 
-  @Column({type: 'jsonb', nullable: true})
+  @Column({type: 'jsonb', default: []})
   likes!: string[];
 
   @Column({type: 'varchar', nullable: true})

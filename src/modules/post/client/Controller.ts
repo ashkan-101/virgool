@@ -104,6 +104,7 @@ export default class Controller {
       res.status(200).send({
         success: true,
         allPosts,
+        currentUser: req.user?._id
       });
     } catch (error) {
       next(error);
@@ -116,6 +117,7 @@ export default class Controller {
       res.status(200).send({
         success: true,
         post,
+        currentUser: req.user?._id
       });
     } catch (error) {
       next(error);
@@ -147,6 +149,19 @@ export default class Controller {
       });
     } catch (error) {
       next(error);
+    }
+  }
+  public async likePost(req: Request, res: Response, next: NextFunction){
+    try {
+      const postId: string = req.params.id as string
+      const userId: string = req.user?._id as string
+
+      const result = await this.Service.likePost(userId, postId)
+      res.status(200).send({
+        success: result
+      })
+    } catch (error) {
+      next(error)
     }
   }
 }
