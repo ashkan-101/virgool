@@ -31,9 +31,8 @@ export default class Post extends BaseEntity implements IPostPG {
   @Column({type: 'varchar', nullable: true})
   slug!: string;
 
-  @ManyToOne(() => User, user => user.posts)
-  @JoinColumn({name: 'author'})
-  author!: User;
+  @Column({type: 'int', default: 0})
+  views!: number;
 
   @CreateDateColumn()
   createdAt!: Date;
@@ -41,6 +40,10 @@ export default class Post extends BaseEntity implements IPostPG {
   @UpdateDateColumn()
   updatedAt!: Date;
 
+
+  @ManyToOne(() => User, user => user.posts)
+  @JoinColumn({name: 'author'})
+  author!: User;
 
   @OneToMany(() => Comment, comment => comment.post)
   comments!: Comment[]

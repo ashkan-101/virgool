@@ -10,4 +10,5 @@ export default interface IBasePost{
   createdAt: Date
   updatedAt: Date
   slug: string
+  views: number
 }

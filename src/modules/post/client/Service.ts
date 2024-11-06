@@ -36,6 +36,9 @@ export default class Service {
       return result
     }
   }
+  private async addView(postId: string, lastViews: number){
+    return await this.factory.updatePost(postId, {views: lastViews + 1})
+  }
   public async validateUser(userId: string, postId: string){
     const post = await this.factory.findPostWithId(postId)
     if(!post){
@@ -116,6 +119,7 @@ export default class Service {
     if(!resultQuery){
       throw new NotFoundException('post not found!')
     }
+    const result = await this.addView(resultQuery._id as string, resultQuery.views)
     return resultQuery
   }
   public async getPostWithId(postId: string){

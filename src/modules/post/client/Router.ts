@@ -526,7 +526,7 @@ postRouter.get('/get-post/:id', postController.getPostWithId.bind(postController
  *               type: string
  *               example: "An error occurred while processing the request."
  */
-postRouter.get('/get/:slug', postController.getPostWithSlug.bind(postController))
+postRouter.get('/:slug', postController.getPostWithSlug.bind(postController))
 
 /**
  * @swagger

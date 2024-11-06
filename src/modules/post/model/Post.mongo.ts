@@ -15,6 +15,7 @@ const postSchema: Schema = new Schema({
   createdAt: {type: Date, default: Date.now()},
   updatedAt: {type: Date, default: Date.now()},
   slug: {type: String, default: null},
+  views: {type: Number, default: 0},
   subcategory: {type: Schema.Types.ObjectId, ref: 'Subcategory', required: true}
 })
 
