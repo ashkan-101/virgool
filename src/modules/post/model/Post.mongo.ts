@@ -15,7 +15,7 @@ const postSchema: Schema = new Schema({
   createdAt: {type: Date, default: Date.now()},
   updatedAt: {type: Date, default: Date.now()},
   slug: {type: String, default: null},
-  subcategory: {type: Schema.Types.ObjectId, required: true}
+  subcategory: {type: Schema.Types.ObjectId, ref: 'Subcategory', required: true}
 })
 
 postSchema.virtual('galleryUrl').get(function (this: IPostMongo){
