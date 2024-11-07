@@ -5,7 +5,7 @@ import IUserMongoRepository from './contracts/IUserMongoRepository';
 
 export default class UserMongoRepository implements IUserMongoRepository{
   public async findByUserName(userName: string): Promise<IUserMongo | null> {
-    return await userModel.findOne({userName})
+    return await userModel.findOne({userName: userName})
   }
   public async findOne(id: string, relations?: string[]): Promise<IUserMongo | null> {
       const userQuery = await userModel.findById(id)

@@ -114,8 +114,9 @@ export default class UserController {
   }
   public async getUserByUserName(req: Request, res: Response, next: NextFunction){
     try {
-      const userName = req.params.userName
+      const userName = req.params.userName as string
       const user = await this.service.getUserByUserName(userName)
+      res.status(200).send(user)
     } catch (error) {
       next(error)
     }

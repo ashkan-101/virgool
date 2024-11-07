@@ -37,5 +37,4 @@ export default class UserService {
   public async getUserByUserName(userName: string){
     return await this.factory.findByUserName(userName)
   }
-
 }

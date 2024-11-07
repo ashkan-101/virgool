@@ -12,7 +12,7 @@ export default class UserRepositoryFactory {
     this.repositories.set(DatabaseName.POSTGRES, new UserPgRepository())
   }
 
-  public getRepository(DatabaseName: DatabaseName){
-    return this.repositories.get(DatabaseName)!
+  public getRepository(databaseName: DatabaseName){
+    return this.repositories.get(databaseName)!
   }
 }
