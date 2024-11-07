@@ -4,6 +4,7 @@ import IBaseUser from "../model/contracts/IBaseUser";
 import { deleteFile } from "../../../services/DeleteFileService";
 import ServerException from "../../../exceptions/ServerException";
 import ValidationException from "../../../exceptions/ValidationException";
+import NotFoundException from "../../../exceptions/NotFoundException";
 
 export default class UserService {
   private readonly factory: UserFactory
@@ -35,6 +36,9 @@ export default class UserService {
     }
   }
   public async getUserByUserName(userName: string){
-    return await this.factory.findByUserName(userName)
+    const user = await this.factory.findByUserName(userName)
+    if(!user){
+      throw new NotFoundException('not found user with this userName')
+    }
   }
 }

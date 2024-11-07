@@ -235,7 +235,93 @@ userRouter.get('/settings/account', userController.getAccount.bind(userControlle
  */
 userRouter.patch('/settings/account', userController.editAccount.bind(userController))
 
+/**
+ * @swagger
+ * /api/v1/user:
+ *   get:
+ *     tags:
+ *       - user
+ *     summary: Retrieve user profile
+ *     description: Returns the current user's profile information including first name, last name, username, avatar, and bio.
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved user profile
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 firstName:
+ *                   type: string
+ *                   description: First name of the user
+ *                 lastName:
+ *                   type: string
+ *                   description: Last name of the user
+ *                 userName:
+ *                   type: string
+ *                   description: Username of the user
+ *                 avatar:
+ *                   type: string
+ *                   description: URL of the user's avatar image
+ *                 bio:
+ *                   type: string
+ *                   description: Bio or personal description of the user
+ *                 _id:
+ *                   type: string
+ *                   description: Unique identifier of the user
+ *       401:
+ *         description: Unauthorized access - user is not authenticated
+ *       500:
+ *         description: Internal server error
+ */
 userRouter.get('/', userController.getUser.bind(userController))
-userRouter.get('/:userName', userController.getUserByUserName.bind(userController))
+
+/**
+ * @swagger
+ * /api/v1/user/{username}:
+ *   get:
+ *     tags:
+ *       - user
+ *     summary: Retrieve user by username
+ *     description: Returns user profile information based on the provided username.
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Username of the user to retrieve
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved user profile
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 firstName:
+ *                   type: string
+ *                   description: First name of the user
+ *                 lastName:
+ *                   type: string
+ *                   description: Last name of the user
+ *                 userName:
+ *                   type: string
+ *                   description: Username of the user
+ *                 avatar:
+ *                   type: string
+ *                   description: URL of the user's avatar image
+ *                 bio:
+ *                   type: string
+ *                   description: Bio or personal description of the user
+ *                 _id:
+ *                   type: string
+ *                   description: Unique identifier of the user
+ *       404:
+ *         description: User not found with the specified username
+ *       500:
+ *         description: Internal server error
+ */
+userRouter.get('/:username', userController.getUserByUserName.bind(userController))
 
 export default userRouter
