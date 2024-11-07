@@ -601,8 +601,86 @@ postRouter.get('/get/:slug', postController.getPostWithSlug.bind(postController)
  */
 postRouter.patch('/published/:id', postController.published.bind(postController))
 
+/**
+ * @swagger
+ * /api/v1/post/{id}/like:
+ *   patch:
+ *     tags:
+ *       - post
+ *     summary: Like or dislike a post
+ *     description: Allows the current user to like or remove their like (dislike) from a post based on post ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID of the post to be liked or disliked
+ *     responses:
+ *       200:
+ *         description: Successfully updated the like status of the post
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: string
+ *                   description: Indicates whether the post was liked or disliked
+ *                   example: "like"
+ *       404:
+ *         description: Post not found with the specified ID
+ *       500:
+ *         description: Internal server error
+ */
 postRouter.patch('/:id/like', postController.likePost.bind(postController))
 
+/**
+ * @swagger
+ * /api/v1/post/all:
+ *   get:
+ *     tags:
+ *       - post
+ *     summary: Retrieve sorted posts
+ *     description: Returns a list of posts sorted by the specified criteria (e.g., newest or view count).
+ *     parameters:
+ *       - in: query
+ *         name: sort
+ *         schema:
+ *           type: string
+ *           enum: [newest, view]
+ *         required: false
+ *         description: Sorting criteria for the posts. Can be 'newest' or 'view' for sorting by newest posts or view count.
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved sorted list of posts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   title:
+ *                     type: string
+ *                     description: Title of the post
+ *                   body:
+ *                     type: string
+ *                     description: Content of the post
+ *                   views:
+ *                     type: integer
+ *                     description: Number of views for the post
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: Date and time when the post was created
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: Date and time when the post was last updated
+ *       500:
+ *         description: Internal server error
+ */
 postRouter.get('/all', postController.getSortingPosts.bind(postController))
 
 export default postRouter
