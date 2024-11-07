@@ -7,6 +7,7 @@ import IPostMongoRepository from "../repositories/contracts/IPostMongoRepository
 
 import IPostMongo from "../model/contracts/IPostMongo";
 import IPostPG from "../model/contracts/IPostPG";
+import PostSort from "../contracts/PostSort";
 
 export default class Factory {
   private readonly postRepository: IPostMongoRepository | IPostPGRepository
@@ -39,5 +40,8 @@ export default class Factory {
   }
   public async publishedPost(postId: string, params: Partial<IPost>){
     return await this.postRepository.updateOne(postId, params)
+  }
+  public async findAndSort(sort?: PostSort){
+  return await this.postRepository.findAndSort(sort)
   }
 }

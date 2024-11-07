@@ -2,6 +2,8 @@ import { FilterQuery } from "mongoose";
 import postModel from '../model/Post.mongo'
 import IPostMongo from '../model/contracts/IPostMongo';
 import IPostMongoRepository from './contracts/IPostMongoRepository';
+import PostSort from "../contracts/PostSort";
+import PostStatus from "../contracts/PostStatus";
 
 export default class PostMongoRepository implements IPostMongoRepository {
   public async findOne(id: string, relations?: string[]): Promise<IPostMongo | null> {
@@ -27,6 +29,21 @@ export default class PostMongoRepository implements IPostMongoRepository {
   public async deleteOne(id: string): Promise<boolean> {
     const deletePost = await postModel.deleteOne({_id: id})
     return deletePost.deletedCount > 0
+  }
+  public async findAndSort(sort?: PostSort): Promise<IPostMongo[]> {
+    let sortStage: any = {}
+    switch(sort){
+      case 'view':
+        sortStage = {views: -1}
+      break
+      case 'newest':
+        sortStage = {createdAt: -1}
+    }
+    const posts = await postModel.aggregate([
+      {$match: {status: PostStatus.PUBLISHED}},
+      {$sort: sortStage}
+    ])
+    return posts
   }
 
   updateMany(where: Partial<IPostMongo>, params: Partial<IPostMongo>): Promise<boolean> {

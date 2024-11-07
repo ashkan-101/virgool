@@ -340,7 +340,7 @@ postRouter.delete('/delete/:id', postController.deletePost.bind(postController))
  *               type: string
  *               example: "An error occurred while processing the request."
  */
-postRouter.get('/get-all', postController.getPosts.bind(postController))
+postRouter.get('/get-all', postController.getMyPosts.bind(postController))
 
 /**
  * @swagger
@@ -526,7 +526,7 @@ postRouter.get('/get-post/:id', postController.getPostWithId.bind(postController
  *               type: string
  *               example: "An error occurred while processing the request."
  */
-postRouter.get('/:slug', postController.getPostWithSlug.bind(postController))
+postRouter.get('/get/:slug', postController.getPostWithSlug.bind(postController))
 
 /**
  * @swagger
@@ -602,5 +602,7 @@ postRouter.get('/:slug', postController.getPostWithSlug.bind(postController))
 postRouter.patch('/published/:id', postController.published.bind(postController))
 
 postRouter.patch('/:id/like', postController.likePost.bind(postController))
+
+postRouter.get('/all', postController.getSortingPosts.bind(postController))
 
 export default postRouter

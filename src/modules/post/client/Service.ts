@@ -11,6 +11,7 @@ import IPostPG from "../model/contracts/IPostPG";
 import PostPG from "../model/Post.pg";
 import DatabaseName from "../../contracts/DatabaseName";
 import User from "../../user/model/User.pg";
+import PostSort from "../contracts/PostSort";
 
 export default class Service {
   private readonly factory: Factory
@@ -110,7 +111,7 @@ export default class Service {
       throw new ServerException('There was a problem deleting the post')
     }
   }
-  public async getAllPosts(userId: string, postStatus: PostStatus){
+  public async getMyPosts(userId: string, postStatus: PostStatus){
     const posts = await this.factory.findPostsWithStatus(userId, postStatus)
     return posts
   }
@@ -150,5 +151,8 @@ export default class Service {
       await this.factory.updatePost(postId, {likes: likes})
       return 'like'
     }
+  }
+  public async getSortingPosts(sort?: PostSort){
+    return await this.factory.findAndSort(sort)
   } 
 }

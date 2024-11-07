@@ -1,8 +1,9 @@
 import IPostPG from "../model/contracts/IPostPG";
 import IPostPGRepository from "./contracts/IPostPGRepository";
 import Post from "../model/Post.pg";
-import {FindOptionsWhere} from "typeorm";
+import {FindOptionsOrder, FindOptionsWhere} from "typeorm";
 import PostStatus from "../contracts/PostStatus";
+import PostSort from "../contracts/PostSort";
 
 export default class PostPGRepository implements IPostPGRepository {
   public async findBySlug(slug: string): Promise<IPostPG | null> {
@@ -39,6 +40,25 @@ export default class PostPGRepository implements IPostPGRepository {
       return false
     }
   }
+  public async findAndSort(sort?: PostSort): Promise<IPostPG[]>{
+    const postRepository = Post.getRepository()
+    let query = postRepository
+    .createQueryBuilder('post')
+    .where('post.status = :status', { status: PostStatus.PUBLISHED})
+
+    switch(sort){
+      case "view":
+        query = query.orderBy('post.views', 'DESC')
+      break
+      case 'newest':
+        query = query.orderBy('post.createdAt', 'DESC')
+      break
+      default: 
+      query = query.orderBy('post.createdAt', 'DESC')
+    }
+    return await query.getMany()
+  }
+
 
   updateMany(where: Partial<IPostPG>, params: Partial<IPostPG>): Promise<boolean> {
     throw new Error("Method not implemented.");
@@ -46,5 +66,4 @@ export default class PostPGRepository implements IPostPGRepository {
   deleteMany(params: Partial<IPostPG>): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
-  
 }

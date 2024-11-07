@@ -5,6 +5,7 @@ import { Request, Response, NextFunction, Express } from "express";
 
 import IPostMongo from "../model/contracts/IPostMongo";
 import IPostPG from "../model/contracts/IPostPG";
+import PostSort from "../contracts/PostSort";
 
 export default class Controller {
   private readonly Service: Service;
@@ -96,11 +97,11 @@ export default class Controller {
       next(error);
     }
   }
-  public async getPosts(req: Request, res: Response, next: NextFunction) {
+  public async getMyPosts(req: Request, res: Response, next: NextFunction) {
     try {
       const postStatus = req.query.poststatus as PostStatus;
       const userId = req.user?._id as string;
-      const allPosts = await this.Service.getAllPosts(userId.toString(), postStatus);
+      const allPosts = await this.Service.getMyPosts(userId.toString(), postStatus);
       res.status(200).send({
         success: true,
         allPosts,
@@ -162,6 +163,15 @@ export default class Controller {
       })
     } catch (error) {
       next(error)
+    }
+  }
+  public async getSortingPosts(req: Request, res: Response, next: NextFunction){
+    try {
+      const sorting = req.query.sort as PostSort | undefined
+      const posts = await this.Service.getSortingPosts(sorting)
+      res.status(200).send(posts)
+    } catch (error) {
+      next(error)      
     }
   }
 }
