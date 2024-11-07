@@ -13,4 +13,5 @@ categoryRouter.patch('/:id/edit', controller.editCategory.bind(controller))
 categoryRouter.delete('/:id/delete', controller.deleteCategory.bind(controller))
 categoryRouter.patch('/subcategory/:id', controller.editSubcategory.bind(controller))
 categoryRouter.delete('/subcategory/:id', controller.deleteSubcategory.bind(controller))
+
 export default categoryRouter

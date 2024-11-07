@@ -24,7 +24,7 @@ export default class UserService {
   }
   public async validateUserName(userName: string){
     const userNames = await this.factory.findByUserName(userName)
-    if(userNames.length > 0){
+    if(userNames){
       throw new ValidationException('this userName already used!')
     }
   }
@@ -34,4 +34,8 @@ export default class UserService {
       throw new ValidationException('this phone number already used!')
     }
   }
+  public async getUserByUserName(userName: string){
+    return await this.factory.findByUserName(userName)
+  }
+
 }

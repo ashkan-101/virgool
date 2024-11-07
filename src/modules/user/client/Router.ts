@@ -235,4 +235,7 @@ userRouter.get('/settings/account', userController.getAccount.bind(userControlle
  */
 userRouter.patch('/settings/account', userController.editAccount.bind(userController))
 
+userRouter.get('/', userController.getUser.bind(userController))
+userRouter.get('/:username', userController.getUserByUserName.bind(userController))
+
 export default userRouter

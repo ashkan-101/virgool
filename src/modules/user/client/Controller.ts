@@ -96,4 +96,28 @@ export default class UserController {
       next(error)
     }
   }
+
+  public async getUser(req: Request, res: Response, next: NextFunction){
+    try {
+      const userParams = {
+        firstName: req.user?.firstName,
+        lastName: req.user?.lastName,
+        userName: req.user?.userName,
+        avatar: req.user?.avatar,
+        bio: req.user?.bio,
+        _id: req.user?._id
+      }
+      res.status(200).send(userParams)
+    } catch (error) {
+      next(error)
+    }
+  }
+  public async getUserByUserName(req: Request, res: Response, next: NextFunction){
+    try {
+      const userName = req.params.userName
+      const user = await this.service.getUserByUserName(userName)
+    } catch (error) {
+      next(error)
+    }
+  }
 }

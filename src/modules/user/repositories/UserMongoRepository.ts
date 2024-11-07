@@ -4,6 +4,9 @@ import IUserMongo from "../model/contracts/IUserMongo";
 import IUserMongoRepository from './contracts/IUserMongoRepository';
 
 export default class UserMongoRepository implements IUserMongoRepository{
+  public async findByUserName(userName: string): Promise<IUserMongo | null> {
+    return await userModel.findOne({userName})
+  }
   public async findOne(id: string, relations?: string[]): Promise<IUserMongo | null> {
       const userQuery = await userModel.findById(id)
       return userQuery
@@ -24,6 +27,7 @@ export default class UserMongoRepository implements IUserMongoRepository{
     const updateUser = await userModel.updateOne({_id: id}, params)
     return updateUser.matchedCount > 0 && updateUser.acknowledged
   }
+  
 
   updateMany(where: Partial<IUserMongo>, params: Partial<IUserMongo>): Promise<boolean> {
     throw new Error("Method not implemented.");
@@ -34,5 +38,4 @@ export default class UserMongoRepository implements IUserMongoRepository{
   deleteMany(params: Partial<IUserMongo>): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
-
 }

@@ -56,7 +56,8 @@ export default class AuthController {
 
       res.status(200).send({
         success: true,
-        token: sign({userId: user._id})
+        token: sign({userId: user._id}),
+        userId: user._id
       })
     } catch (error) {
       next(error)

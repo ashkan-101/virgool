@@ -17,8 +17,7 @@ export default class UserFactory{
     return await this.userRepository.updateOne(userId, params)
   }
   public async findByUserName(userName: string){
-    const paramsQuery = {userName: userName}
-    return await this.userRepository.findMany(paramsQuery)
+    return await this.userRepository.findByUserName(userName)
   }
   public async findByMobile(mobile: string){
     return await this.userRepository.findByMobile(mobile)

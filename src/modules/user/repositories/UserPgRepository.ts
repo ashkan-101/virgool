@@ -5,6 +5,9 @@ import IUserPGRepository from './contracts/IUserPGRepository';
 
 
 export default class UserPgRepository implements IUserPGRepository {
+  public async findByUserName(userName: string): Promise<IUserPG | null> {
+    return await User.findOne({where: {userName: userName}})
+  }
   public async findByMobile(mobile: string): Promise<null | IUserPG> {
     const userQuery = await User.findOneBy({mobile: mobile})
     return userQuery
