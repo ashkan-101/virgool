@@ -20,6 +20,7 @@ export default class CategoryService {
     return newCategory
   }
   public async createSubcategory(title: string, categoryId: string){
+    await this.getCategory(categoryId)
     const params = {title, category: categoryId}
     const newSubcategory = await this.factory.saveNewSubcategory(params)
     if(!newSubcategory){

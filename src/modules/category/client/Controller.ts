@@ -35,5 +35,4 @@ export default class CategoryController {
       next(error)
     }
   }
-
 }
